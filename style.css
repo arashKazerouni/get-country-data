@@ -16,14 +16,14 @@ body {
   min-height: 100vh;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .container {
   display: flex;
   flex-flow: column;
-  align-items: center;
+  align-items:center;
 }
 
 .countries {
@@ -123,4 +123,26 @@ body {
   margin: 2rem;
   border: 3rem solid white;
   box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.get-country {
+  border-radius: 5px;
+  margin: 3rem auto;
+}
+.get-country > * {
+  padding: 0.75rem 2rem;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 17px;
+}
+
+button {
+  transition: all 150ms;
+  border-radius: 10px;
+  background-color: whitesmoke;
+}
+.get-country > button:active {
+  box-shadow: 0 0.25rem 0.74rem 0.12rem rgba(0, 0, 0, 0.426);
+  transform: translateY(3px);
 }

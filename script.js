@@ -2,8 +2,8 @@
 
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
-const input = document.getElementById('myInput').value
-const button = document.querySelector('button')
+const input = document.querySelector('.myInput');
+const button = document.querySelector('button');
 ///////////////////////////////////////
 const getCountryData = function (country) {
   const request = new XMLHttpRequest();
@@ -18,8 +18,8 @@ const getCountryData = function (country) {
               <h3 class="country__name">${data.name}</h3>
               <h4 class="country__region">${data.region}</h4>
               <p class="country__row"><span>👫</span>${(
-                (+data.population/1000000).toFixed(1)
-              )}</p>
+                +data.population / 1000000
+              ).toFixed(1)}</p>
               <p class="country__row"><span>🗣️</span>${
                 data.languages[0].name
               }</p>
@@ -33,4 +33,12 @@ const getCountryData = function (country) {
     countriesContainer.style.opacity = 1;
   });
 };
-getCountryData('iran')
+const loadCountry = e => {
+  e.preventDefault();
+  const isButton = e.target === button;
+  if (isButton) {
+    getCountryData(input.value);
+    input.value = '';
+  }
+};
+document.addEventListener('click', loadCountry);
