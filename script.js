@@ -5,6 +5,8 @@ const countriesContainer = document.querySelector('.countries');
 const input = document.querySelector('.myInput');
 const button = document.querySelector('button');
 const errorText = document.getElementById('errorText');
+input.value = '';
+
 ///////////////////////////////////////
 const getCountryData = function (country) {
   const request = new XMLHttpRequest();
@@ -36,7 +38,7 @@ const getCountryData = function (country) {
       errorText.innerText = '';
     } catch {
       console.error('something went wrong');
-      if (input.value ==='') return;
+      if (input.value !== '') return;
       errorText.innerText = 'Country name is wrong !';
     }
   });
@@ -46,10 +48,12 @@ const loadCountry = e => {
   const isButton = e.target === button;
   if (isButton) {
     getCountryData(input.value);
-    if (input.value !== '') return;
-    errorText.innerText = "Input couldn't be empty!";
+    if (input.value === '') {
+      errorText.innerText = "Input couldn't be empty!";
+    } else {
+      input.value = '';
+    }
   }
-  input.value = '';
 };
 document.addEventListener('click', loadCountry);
 input.addEventListener('keypress', function (event) {
@@ -59,3 +63,4 @@ input.addEventListener('keypress', function (event) {
     button.click();
   }
 });
+input.value = '';
