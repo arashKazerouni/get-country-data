@@ -4,16 +4,16 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 const input = document.querySelector('.myInput');
 const button = document.querySelector('button');
-const errorText = document.getElementById('errorText')
+const errorText = document.getElementById('errorText');
 ///////////////////////////////////////
 const getCountryData = function (country) {
   const request = new XMLHttpRequest();
   request.open('GET', `https://restcountries.com/v2/name/${country}`);
   request.send();
   request.addEventListener('load', function () {
-    try{
-    const [data] = JSON.parse(this.responseText);
-    const html = `
+    try {
+      const [data] = JSON.parse(this.responseText);
+      const html = `
           <article class="country">
           <img class="country__img" src="${data.flag}" />
           <div class="country__data">
@@ -31,12 +31,14 @@ const getCountryData = function (country) {
           </div>
           </article>
         `;
-    countriesContainer.insertAdjacentHTML('beforeend', html);
-    countriesContainer.style.opacity = 1;
-    errorText.innerText = ''
-            }catch{
-                errorText.innerText = 'Country name is Wrong !'
-            }
+      countriesContainer.insertAdjacentHTML('beforeend', html);
+      countriesContainer.style.opacity = 1;
+      errorText.innerText = '';
+    } catch {
+      console.error('something went wrong');
+      if (input.value ==='') return;
+      errorText.innerText = 'Country name is wrong !';
+    }
   });
 };
 const loadCountry = e => {
@@ -44,14 +46,16 @@ const loadCountry = e => {
   const isButton = e.target === button;
   if (isButton) {
     getCountryData(input.value);
-    input.value = '';
+    if (input.value !== '') return;
+    errorText.innerText = "Input couldn't be empty!";
   }
+  input.value = '';
 };
 document.addEventListener('click', loadCountry);
-input.addEventListener("keypress", function(event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-      // Trigger the button element with a click
-      button.click();
-    }
-  }); 
+input.addEventListener('keypress', function (event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === 'Enter') {
+    // Trigger the button element with a click
+    button.click();
+  }
+});
