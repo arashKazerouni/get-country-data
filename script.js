@@ -38,8 +38,6 @@ const getCountryData = function (country) {
       errorText.innerText = '';
     } catch {
       console.error('something went wrong');
-      if (input.value !== '') return;
-      errorText.innerText = 'Country name is wrong !';
     }
   });
 };
@@ -47,12 +45,10 @@ const loadCountry = e => {
   e.preventDefault();
   const isButton = e.target === button;
   if (isButton) {
-    getCountryData(input.value);
-    if (input.value === '') {
-      errorText.innerText = "Input couldn't be empty!";
-    } else {
-      input.value = '';
-    }
+    if (getCountryData(input.value)) return;
+    errorText.innerText = 'Country name is wrong !';
+    if (input.value !== '') return;
+    errorText.innerText = "Input couldn't be empty!";
   }
 };
 document.addEventListener('click', loadCountry);
