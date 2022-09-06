@@ -10,6 +10,7 @@ const getCountryData = function (country) {
   request.open('GET', `https://restcountries.com/v2/name/${country}`);
   request.send();
   request.addEventListener('load', function () {
+    try{
     const [data] = JSON.parse(this.responseText);
     const html = `
           <article class="country">
@@ -31,6 +32,9 @@ const getCountryData = function (country) {
         `;
     countriesContainer.insertAdjacentHTML('beforeend', html);
     countriesContainer.style.opacity = 1;
+            }catch{
+                console.error('something went wrong')
+            }
   });
 };
 const loadCountry = e => {
