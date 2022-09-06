@@ -4,6 +4,7 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 const input = document.querySelector('.myInput');
 const button = document.querySelector('button');
+const errorText = document.getElementById('errorText')
 ///////////////////////////////////////
 const getCountryData = function (country) {
   const request = new XMLHttpRequest();
@@ -32,8 +33,9 @@ const getCountryData = function (country) {
         `;
     countriesContainer.insertAdjacentHTML('beforeend', html);
     countriesContainer.style.opacity = 1;
+    errorText.innerText = ''
             }catch{
-                console.error('something went wrong')
+                errorText.innerText = 'Country name is Wrong !'
             }
   });
 };
