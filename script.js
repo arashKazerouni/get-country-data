@@ -7,7 +7,6 @@ const button = document.querySelector('button');
 const errorText = document.getElementById('errorText');
 input.value = '';
 
-///////////////////////////////////////
 // Render Country From Data
 const renderCountry = function (data, ClassName = '') {
   const html = `
@@ -27,6 +26,11 @@ const renderCountry = function (data, ClassName = '') {
   countriesContainer.insertAdjacentHTML('beforeend', html);
   countriesContainer.style.opacity = 1;
 };
+const renderError = msg => {
+  countriesContainer.insertAdjacentHTML('beforeend', msg);
+  countriesContainer.style.opacity = 1;
+};
+///////////////////////////////////////
 
 const getCountryData = country => {
   // Country 1
@@ -41,7 +45,12 @@ const getCountryData = country => {
       return fetch(`https://restcountries.com/v2/alpha/${neighbour}`);
     })
     .then(response => response.json())
-    .then(data => renderCountry(data, 'neighbour'));
+    .then(data => renderCountry(data, 'neighbour'))
+    // by this catch, we'll handle all errors of chain in the end of chain.
+    .catch(err => {
+      console.error(`${err} Something went wrong 💥💥`);
+      renderError(`Something went wrong 💥 ${err.message}`);
+    });
 };
 
 // Click Handler
