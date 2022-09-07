@@ -26,7 +26,7 @@ const renderCountry = function (data, ClassName = '') {
   countriesContainer.insertAdjacentHTML('beforeend', html);
 };
 const renderError = msg => {
-  errorText.insertAdjacentHTML('beforeend', msg);
+  errorText.innerHTML = msg;
 };
 ///////////////////////////////////////
 
@@ -34,7 +34,6 @@ const getCountryData = country => {
   // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
     .then(response => {
-      console.log(response);
       if (response.url === 'https://restcountries.com/v2/name/')
         throw new Error('Input is empty .');
       if (!response.ok) throw new Error(`Country not found ${response.status}`);
@@ -42,17 +41,20 @@ const getCountryData = country => {
     })
     .then(data => {
       renderCountry(data[0]);
-      const neighbour = data[0].borders[0];
+      const neighbour = data[0].borders;
       if (!neighbour) return;
-
       // Country 2
-      return fetch(`https://restcountries.com/v2/alpha/${neighbour}`);
+      return fetch(`https://restcountries.com/v2/alpha/${neighbour[0]}`);
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response)
+        throw new Error("Sorry :') we didn't find neighbour for this one");
+      return response.json();
+    })
     .then(data => renderCountry(data, 'neighbour'))
     // by this catch, we'll handle all errors of chain in the end of chain.
     .catch(err => {
-      console.error(`${err} Something went wrong `);
+      console.error(`${err}. Something went wrong `);
       renderError(`${err.message}.`);
     })
     .finally(() => {
