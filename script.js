@@ -13,9 +13,8 @@ const getCountryData = function (country) {
   request.open('GET', `https://restcountries.com/v2/name/${country}`);
   request.send();
   request.addEventListener('load', function () {
-    try {
-      const [data] = JSON.parse(this.responseText);
-      const html = `
+    const [data] = JSON.parse(this.responseText);
+    const html = `
           <article class="country">
           <img class="country__img" src="${data.flag}" />
           <div class="country__data">
@@ -33,16 +32,9 @@ const getCountryData = function (country) {
           </div>
           </article>
         `;
-      countriesContainer.insertAdjacentHTML('beforeend', html);
-      countriesContainer.style.opacity = 1;
-      errorText.innerText = '';
-    } catch {
-      console.error('something went wrong');
-      // errorText.innerText = 'oops!';
-      // if (input.value !== '') return;
-      // errorText.innerText = 'yo, input is empty 🙄';
-
-    }
+    countriesContainer.insertAdjacentHTML('beforeend', html);
+    countriesContainer.style.opacity = 1;
+    errorText.innerText = '';
   });
 };
 const loadCountry = e => {
