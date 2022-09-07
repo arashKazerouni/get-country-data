@@ -24,18 +24,20 @@ const renderCountry = function (data, ClassName = '') {
   </article>
 `;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.style.opacity = 1;
 };
 const renderError = msg => {
-  countriesContainer.insertAdjacentHTML('beforeend', msg);
-  countriesContainer.style.opacity = 1;
+  errorText.insertAdjacentHTML('beforeend', msg);
+
 };
 ///////////////////////////////////////
 
 const getCountryData = country => {
   // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      return response.json();
+    })
     .then(data => {
       renderCountry(data[0]);
       const neighbour = data[0].borders[0];
@@ -48,9 +50,14 @@ const getCountryData = country => {
     .then(data => renderCountry(data, 'neighbour'))
     // by this catch, we'll handle all errors of chain in the end of chain.
     .catch(err => {
-      console.error(`${err} Something went wrong 💥💥`);
-      renderError(`Something went wrong 💥 ${err.message}`);
+      console.error(`${err} Something went wrong `);
+      renderError(`Something went wrong .${err.message}. Try again .`);
+    })
+    .finally(() => {
+      countriesContainer.style.opacity = 1;
     });
+  errorText.innerHTML = '';
+
 };
 
 // Click Handler
