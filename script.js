@@ -29,13 +29,20 @@ const renderCountry = function (data, ClassName = '') {
 };
 
 const getCountryData = country => {
+  // Country 1
   fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(response => {
-      return response.json();
+    .then(response => response.json())
+    .then(data => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+      if (!neighbour) return;
+
+      // Country 2
+      return fetch(`https://restcountries.com/v2/alpha/${neighbour}`);
     })
-    .then(data => renderCountry(data[0]));
+    .then(response => response.json())
+    .then(data => renderCountry(data, 'neighbour'));
 };
-// getCountryData('portugal');
 
 // Click Handler
 document.addEventListener('click', e => {
