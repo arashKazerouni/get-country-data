@@ -27,7 +27,6 @@ const renderCountry = function (data, ClassName = '') {
 };
 const renderError = msg => {
   errorText.insertAdjacentHTML('beforeend', msg);
-
 };
 ///////////////////////////////////////
 
@@ -36,6 +35,9 @@ const getCountryData = country => {
   fetch(`https://restcountries.com/v2/name/${country}`)
     .then(response => {
       console.log(response);
+      if (response.url === 'https://restcountries.com/v2/name/')
+        throw new Error('Input is empty .');
+      if (!response.ok) throw new Error(`Country not found ${response.status}`);
       return response.json();
     })
     .then(data => {
@@ -51,13 +53,12 @@ const getCountryData = country => {
     // by this catch, we'll handle all errors of chain in the end of chain.
     .catch(err => {
       console.error(`${err} Something went wrong `);
-      renderError(`Something went wrong .${err.message}. Try again .`);
+      renderError(`${err.message}.`);
     })
     .finally(() => {
       countriesContainer.style.opacity = 1;
     });
   errorText.innerHTML = '';
-
 };
 
 // Click Handler
@@ -66,8 +67,8 @@ document.addEventListener('click', e => {
   const isButton = e.target === button;
   if (isButton) {
     getCountryData(input.value);
-    input.value = '';
   }
+  input.value = '';
 });
 
 // Enter Handler
